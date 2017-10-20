@@ -1,376 +1,393 @@
 # IlyriaMachine2
 
-1. لغة آلة إليريا:
-1. لغة آلة ذات تعليمات محددة
-2. تتألف التعليمة من رقم طبيعي
-3. طول هذا الرقم يكون حسب مساحة الذاكرة المتوفرة
-4. الرقمان المتواجدان على اليسار في التعليمة يمثلان العملية
-5. باقي الأرقام تمثل عنوان الذاكرة الذي تتم عليه العملية
-6. لا يهم أن تمثل التعليمة برقم عَشري أو رقم سادس عشري
-7. تنقسم التعليمة إلى فئتين:
-1. تعليمة تنفيذية: التي تقوم بالعمليات على المتغيرات أو تغير عداد البرنامج أو تعلم ذاكرة على أنّها ملصق
-2. تعليمة حجز: التي تحجز مكان في الذاكرة لمتغير ما
-8. مثال:
-1. +100004
-1. +10 تمثل العملية
-2. 0004 تمثل الذاكرة التي تتم عليها العملية
-
-الشيفرة 
- الاسم
-name 
-01
-ثماني
-byte
-02
-قصير
-short
-03
-حرف
-char
-04
-صحيح
-int
-05
-طويل
-long
-06
-عائم
-float
-07
-مزدوج
-double
-08
-حروف
-chars
-
-
-
-10
-اقرا
-read
-11
-اكتب
-write
-12
-اكتبسج
-writenl
-
-
-
-20
-حمل
-Load
-21
-خزن
-store
-
-
-
-30
-جمع
-add
-31
-طرح
-sub
-32
-قسمة
-div
-33
-ضرب
-mul
-34
-باقي
-mod
-35
-زد
-inc
-36
-نقص
-dec
-
-
-
-40
-تقاطع
-branch
-41
-تقاطعسلب
-branchneg
-42
-تقاطعصفر
-branchzero
-43
-انهاء
-halt
-
-
-
-50
-اس
-exp
-51
-نوع
-caltype
-52
-دقة
-prc
-53
-جذر
-sqrt
-
-
-
-60
-ملصق
-label
-
-2. وحدة جلب وفك تشفير التعليمة:
-1. تجلب التعليمة الحالية من الذاكرة:
-1. مكان التعليمة يحدده عداد البرنامج
-2. تفكك التعليمة إلى عملية ومعامل
-3. تضع العملية في سجل العملية
-4. تضع المعامل في سجل المعامل
-5. تغير قيمة عداد البرنامج لمكان التعليمة التالية
-3. وحدة التنفيذ:
-1. تقوم بتنفيذ التعليمة:
-1. تحدد العملية حسب سجل العملية
-2. تنفذ العملية على الذاكرة المحددة في سجل المعامل
-2. هناك عمليات لا تحتاج إلى معامل:
-1. إيقاف
-4. حجز المتغيرات:
-1. يقوم بحجز الذاكرة للمتغيرات
-2. هناك 8 أنواع للمتغيرات:
-1. ثماني byte يحجز 1 بايت من الذاكرة
-2. قصير short يحجز 2 بايت من الذاكرة
-3. حرفي char يحجز 2 بايت من الذاكرة
-4. صحيح int يحجز 4 بايت من الذاكرة
-5. طويل long يحجز 8 بايت من الذاكرة
-6. عائم float يحجز 4 بايت من الذاكرة
-7. مزدوج double يحجز 8 بايت من الذاكرة
-8. نصي سلسلة من حرفي
-9. يحجز كل متغير عدد البايتات اللازمة حسب نوعه
-10. النوع النصي ثابت ولا يتغير
-11. طريقة الحجز
-1. قسم التعليمة إلى أجزاء الفاصل بينها هو الفراغ
-2. قم بتحويل الجزء الأول إلى رقم صحيح
-3. في حالة كان الرقم الصحيح الموافق للجزء الأول:
-1. +01 : احجز ثماني في الذاكرة الخاصة بالمتغيرات
-2. +02 : احجز قصير  ...
-3. +03 : احجز حرفي  ...
-4. +04 : احجز صحيح  ...
-5. +05 : احجز طويل  ...
-6. +06 : احجز عائم  ...
-7. +07 : احجز مزدوج ...
-8. +08 : احجز نصي   ... 
-
-5. مجمع إليريا:
-1. يحول التعليمات المكتوبة بلغة تجميع إليريا إلى الشيفرات والذواكر الموافقة لها
-1. مثال:
-ثماني 0 ث
-+01   0 4
-6. السجلات:
-1. المجمع: فيه تتراكم النتائج الصادرة عن العمليات كالجمع والطرح والقسمة… وأيضا عند تحميل قيمة متغير من ذاكرة معينة فإن هذه القيمة تنسخ وتوضع في المجمع
-2. شيفرة العملية: تضع فيها وحدة جلب وفك الشيفرة قيمة تمثل العملية الحالية التي ستجرى على المعامل
-3. المعامل: فيه يخزن مكان الذاكرة التي ستجرى عليها العملية الحالية
-4. سجل التعليمة: تخزن فيه التعليمة الحالية
-5. عداد البرنامج: يحدد مكان التعليمة التالية في الذاكرة
-6. نهاية التعليمات: عنوان ذاكرة يمثل حد الذاكرة المحجوزة للتعليمات طبعا وكذلك بداية أول ذاكرة مخصصة للمتغيرات
-1. أول عنوان ذاكرة خاص بالتعليمات هو 0
-7. بداية المتغيرات: أول عنوان ذاكرة مخصص للمتغيرات وحد الذاكرة المحجوزة للتعليمات
-8. بداية الإجراءات: أول عنوان ذاكرة مخصص للإجراءات وكذلك حد الذاكرة المخصصة للمتغيرات
-1. حد ذاكرة الإجراءات هو حد الذاكرة الرئيسية
-
-
-
-7. الأسماء المرشحة لتكون فئات:
-
-الاسم 
- جافا
-لغة آلة إليريا
-IlyriaMachine
-وحدة المعالجة المركزية
-CPU
-وحدة جلب وفك الشيفرة
-FetchDecodeUnit
-وحدة التنفيد
-ExecutionUnit
-
-
-وحدة الذاكرة
-Memory
-
-
-مجمع إليريا
-IlyriaAssembler
-لغة تجميع إليريا
-IlyriaAssembly
-
-8. نموذج الفئات:
-
-
-IlyriaMachine«interface»
-BYTE   : Integer  = 1 {ReadOnly}
-SHORT  : Integer  = 2 {ReadOnly}
-CHAR   : Integer  = 3 {ReadOnly}
-INT    : Integer  = 4 {ReadOnly}
-LONG   : Integer  = 5 {ReadOnly}
-FLOAT  : Integer  = 6 {ReadOnly}
-DOUBLE : Integer  = 7 {ReadOnly}
-CHARS  : Integer  = 8 {ReadOnly}
-
-READ    : Integer  = 10 {ReadOnly}
-WRITE   : Integer  = 11 {ReadOnly}
-WRITENL : Integer  = 12 {ReadOnly} 
-
-LOAD    : Integer  = 20 {ReadOnly}
-STORE   : Integer  = 21 {ReadOnly}
-
-ADD : Integer  = 30 {ReadOnly}
-SUB : Integer  = 31 {ReadOnly}
-DIV : Integer  = 32 {ReadOnly}
-MUL : Integer  = 33 {ReadOnly}
-MOD : Integer  = 34 {ReadOnly}
-INC : Integer  = 35 {ReadOnly}
-DEC : Integer  = 36 {ReadOnly}
-
-BRANCH     : Integer  = 40 {ReadOnly} 
-BRANCHNEG  : Integer  = 41 {ReadOnly}
-BRANCHZERO : Integer  = 42 {ReadOnly}
-HALT       : Integer  = 43 {ReadOnly} 
-
-EXP      : Integer  = 50 {ReadOnly}
-CALTYPE  : Integer  = 51 {ReadOnly}
-PRCISION : Integer  = 52 {ReadOnly}
-SQRT      : Integer  = 53 {ReadOnly}
-
-LABEL     : Integer  = 70 {ReadOnly}
-FUNCTION  : Integer  = 71 {ReadOnly}
-RETURN    : Integer  = 72 {ReadOnly}
-CALL      : Integer  = 73 {ReadOnly}
-+fetch()   : Integer
-+decode()  : Integer[]
-+execute() : Integer
-+reset()
-
- CPU implements IlyriaMachine
--nextId : Integer
--cpuId : Integer {ReadOnly}
-
-#«create»fetchDecode : FetchDecodeUnit
-#«create»execution   : ExecutionUnit
-#«create»ram         : ByteBuffer
-
-#«create»input  : Scanner     {ReadOnly}
-#«create»output : PrintStream {ReadOnly}
-+CPU«constructor»()
-+fetch()   : Integer 
-+decode()  : Integer[]
-+execute() : Integer
-+reset()
-
-+getInput()  : Scanner
-+getOutput() : PrintStream
-
-
- FetchDecodeUnit
-#execute     : ExecutionUnit
-#ram         : ByteBuffer
-+FetchDecodeUnit«constructor»(memories : ByteBuffer,
-  execute : ExecutionUnit)
-+fetch()
-+decode()
-
-
- ExecutionUnit
-#accum : Double
-
-#operationCode : Integer
-#operand       : Integer
-
-#calculationType : Byte
-#precision       : Byte
-
-#instruction    : integer
-#programCounter : Integer
-
-#dataIndex : integer;
-
--INSTRUCTION_LENGTH : Byte {ReadOnly}
-
--END_INSTRUCTION : Integer {ReadOnly}
--END_DATA        : Integer {ReadOnly}
--END_MEMORY      : Integer {ReadOnly}
-
-#ram : ByteBuffer;
-
-#input  : Scanner     {ReadOnly}
-#output : PrintStream {ReadOnly}
-+ExecutionUnit«constructor»( memory : ByteBuffer)
-+execute()
-+getAccumulator() : Double
-+setAccumulator(value : Double)
-
-+getOperationCode() : Integer
-+getOperand()       : Integer
-+setOperationCode(operation : Integer)
-+setOperand(operand : Integer)
-
-+getCalculationType() : Byte
-+getPrecision()       : Byte
-+setCalculationType(type : Byte)
-+setPrecision(precision : Byte)
-
-+getInstructionRegister() : Integer
-+getProgramCounter()      : Integer
-+setInstructionRegister( instruction : Integer )
-+setProgramCounter( pc : Integer )
-+incrementProgramCounter()
-
-+getEndOfInstructions() : Integer
-+getEndOfData() : Integer
-+getEndOfMemory() : Integer
-
-+reset()
-
-
- IlyriaAssembler
-cpu : CPU
-input  : Scanner
-path   : Path
-output : PrintStream
-
-values : HashTable< String integer >
-+IlyriaAssembler«constructor»( source : Path )
--readNextLine() : String
--splitLine( line : String ) 	
--compile() : Integer
-
-
-
-9. بالنسبة لخطوات التنفيذ هي مفصلة في النص المصدري للمشروع mim
-10. إضافات:
-1. تعليمة الحجز الديناميكي ALLOC:
-1. التي تحجز مساحة جديدة للمتغيرات
-2. ثم تضيف لـdataIndex عدد البايتات المحجوزة
-2. تعليمة الحذف DEL:
-1.  التي تحرر مساحة من الذاكرة
-2. ثم تنقص من dataIndex عدد البايتات المحذوفة
-3. ( لا داعي لها)مشكلة إزاحة جميع عناوين المتغيرات
-4. (تم حلها في الإجراءات)مشكلة تغيير جميع التعليمات التي ترجع إلى هذه العناوين
-11. الإجراءات:
-1. تحدد الإجراءات بشيفرة العملية PROCEDURE
-2. ينتهي الإجراء بالتعليمة RETURN:
-1. هذه التعليمة ترجع إلى العنوان التالي بعد تعليمة الإستدعاء
-2. لا ترجع أي قيمة بل يمكن التعليمات التي في الإجراء هي التي تقوم بهذا…
-3. تستدعى الإجراءات بشيفرة العملية CALL
-1. أولا يقفز عداد المكدسة إلى العنوان التالي في المكدسة
-2. يضع علامة بداية الإطار بالتعليمة FRAME
-3. يضع التعليمات الواحدة تلوى الأخرى
-4. بعد وضع التعليمة RETURN التي يجب أن تنتهي بها الإجراءات:
-1. يعطى للتعليمة RETURN عنوان التعليمة التالية بعد الإستدعاء
-2. يقفز عداد البرنامج إلى التعليمة الأولى للإجراء الحالي
-3. ينفذ التعليمات وقد يحجز أماكن في الذاكرة
-4. محو المتغيرات المحلية يدوي
-5. يجب أن تحذف المتغيرات المحلية بشكل عكس المصرح به
-6. يجب أن يحذف الإطار 
-5. في حالة استدعاء إجراء لإجراء آخر يحدث نفس الشيء
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><!--This file was converted to xhtml by LibreOffice - see http://cgit.freedesktop.org/libreoffice/core/tree/filter/source/xslt for the code.--><head profile="http://dublincore.org/documents/dcmi-terms/"><meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/><title xml:lang="en-US">- no title specified</title><meta name="DCTERMS.title" content="" xml:lang="en-US"/><meta name="DCTERMS.language" content="en-US" scheme="DCTERMS.RFC4646"/><meta name="DCTERMS.source" content="http://xml.openoffice.org/odf2xhtml"/><meta name="DCTERMS.issued" content="2017-02-28T12:43:08.007218963" scheme="DCTERMS.W3CDTF"/><meta name="DCTERMS.modified" content="2017-03-15T19:51:34.286814178" scheme="DCTERMS.W3CDTF"/><meta name="DCTERMS.provenance" content="" xml:lang="en-US"/><meta name="DCTERMS.subject" content="," xml:lang="en-US"/><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" hreflang="en"/><link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" hreflang="en"/><link rel="schema.DCTYPE" href="http://purl.org/dc/dcmitype/" hreflang="en"/><link rel="schema.DCAM" href="http://purl.org/dc/dcam/" hreflang="en"/><style type="text/css">
+	@page {  }
+	table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+	td, th { vertical-align:top; font-size:12pt;}
+	h1, h2, h3, h4, h5, h6 { clear:both }
+	ol, ul { margin:0; padding:0;}
+	li { list-style: none; margin:0; padding:0;}
+	<!-- "li span.odfLiEnd" - IE 7 issue-->
+	li span. { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+	span.footnodeNumber { padding-right:1em; }
+	span.annotation_style_by_filter { font-size:95%; font-family:Arial; background-color:#fff000;  margin:0; border:0; padding:0;  }
+	* { margin:0;}
+	.fr1 { font-size:12pt; font-family:Liberation Serif; text-align:center; vertical-align:top; writing-mode:lr-tb; }
+	.P1 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P10 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P100 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P101 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P102 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P103 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P104 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P105 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P106 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P107 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P108 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P109 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P11 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P110 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P111 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P112 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P113 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P114 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P115 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P116 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P117 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P118 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P119 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:page; }
+	.P12 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P120 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:page; }
+	.P121 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P122 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P123 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P124 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P125 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P126 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P127 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P128 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; background-color:transparent; }
+	.P129 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P13 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-weight:normal; }
+	.P130 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P131 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P132 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P133 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P134 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P135 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P136 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P137 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P138 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P139 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P14 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:center ! important; font-style:italic; font-weight:bold; }
+	.P140 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P141 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P142 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P143 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P144 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P145 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P146 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P147 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P148 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P149 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P15 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:center ! important; font-style:italic; font-weight:bold; }
+	.P150 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P151 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P152 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P153 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P154 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P155 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P156 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P157 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P158 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P159 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P16 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:center ! important; font-style:italic; font-weight:bold; }
+	.P160 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P161 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P162 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P163 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P164 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P165 { font-size:12pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P166 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;color:#0000ff; font-weight:bold; }
+	.P167 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P168 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P169 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P17 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:center ! important; font-style:italic; font-weight:bold; }
+	.P170 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P171 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P172 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P173 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P174 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P175 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P176 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P177 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P178 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P179 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P18 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:center ! important; font-style:italic; font-weight:bold; }
+	.P180 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P181 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P182 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P183 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P184 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P19 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:italic; }
+	.P2 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:normal; }
+	.P20 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:italic; }
+	.P21 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P22 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P23 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P24 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P25 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P26 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P27 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P28 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P29 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P3 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P30 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P31 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; text-decoration:underline; }
+	.P32 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P33 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P34 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P35 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P36 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P37 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P38 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P39 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P4 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P40 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P41 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P42 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P43 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P44 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P45 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P46 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P47 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P48 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P49 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P5 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P50 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P51 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; }
+	.P52 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P53 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P54 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P55 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P56 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P57 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P58 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P59 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P6 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P60 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P61 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P62 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P63 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P64 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P65 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P66 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P67 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P68 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P69 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; text-decoration:underline; }
+	.P7 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P70 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; text-decoration:underline; }
+	.P71 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; text-decoration:none ! important; }
+	.P72 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P73 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P74 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:lr-tb; text-align:left ! important; font-style:normal; }
+	.P75 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; background-color:transparent; }
+	.P76 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P77 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P78 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P79 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P8 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;}
+	.P80 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P81 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P82 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P83 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P84 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P85 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P86 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P87 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P88 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P89 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P9 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:rl-tb; text-align:left ! important;font-weight:bold; }
+	.P90 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P91 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P92 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P93 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P94 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P95 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; color:#0000ff; font-weight:bold; }
+	.P96 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P97 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P98 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.P99 { font-size:13pt; font-family:Nimbus Mono L; writing-mode:page; text-align:center ! important; font-weight:bold; }
+	.الجدول1 { width:17.775cm; margin-left:0cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول2 { width:17.59cm; float:none; writing-mode:rl-tb; }
+	.الجدول3 { width:17.63cm; margin-left:0cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول4 { width:17.59cm; float:none; writing-mode:rl-tb; }
+	.الجدول5 { width:17.63cm; margin-left:0cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول6 { width:17.63cm; margin-left:0cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول7 { width:17.63cm; margin-left:0cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول8 { width:17.463cm; margin-left:0.164cm; margin-right:auto;writing-mode:rl-tb; }
+	.الجدول1_A1 { vertical-align:middle; background-color:#99ff66; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول1_A2 { vertical-align:middle; background-color:#ccff66; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_A3 { vertical-align:middle; background-color:#ccffcc; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_A4 { vertical-align:middle; background-color:#ffcc00; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_A5 { vertical-align:middle; background-color:#dddddd; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_B5 { vertical-align:middle; background-color:#dddddd; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_B7 { vertical-align:middle; background-color:#eeeeee; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_C7 { vertical-align:middle; background-color:#eeeeee; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_E4 { vertical-align:middle; background-color:#ffcc00; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A1 { background-color:#000000; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A10 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A11 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A12 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A13 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A14 { padding:0.097cm; border-style:none; }
+	.الجدول2_A15 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A16 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A17 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-style:none; }
+	.الجدول2_A18 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A21 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A22 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A23 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A24 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A25 { padding:0.097cm; border-style:none; }
+	.الجدول2_A26 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A28 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A29 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A30 { padding:0.097cm; border-style:none; }
+	.الجدول2_A31 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A32 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A33 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A34 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A35 { padding:0.097cm; border-style:none; }
+	.الجدول2_A36 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_A9 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B10 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B11 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B12 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B13 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B14 { padding:0.097cm; border-style:none; }
+	.الجدول2_B15 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B16 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B17 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-style:none; }
+	.الجدول2_B18 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B19 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B20 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B21 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B22 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B23 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B24 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B25 { padding:0.097cm; border-style:none; }
+	.الجدول2_B26 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B27 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B28 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B29 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B30 { padding:0.097cm; border-style:none; }
+	.الجدول2_B31 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B32 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B33 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B34 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B35 { padding:0.097cm; border-style:none; }
+	.الجدول2_B36 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B5 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B6 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B7 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B8 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_B9 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C1 { background-color:#000000; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C10 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C11 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C12 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C13 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C14 { padding:0.097cm; border-style:none; }
+	.الجدول2_C15 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C16 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C17 { padding:0.097cm; border-left-style:none; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-style:none; }
+	.الجدول2_C18 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C19 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C20 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C21 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C22 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C23 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C24 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C25 { padding:0.097cm; border-style:none; }
+	.الجدول2_C26 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C27 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C28 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C29 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C30 { padding:0.097cm; border-style:none; }
+	.الجدول2_C31 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C32 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C33 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C34 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C35 { padding:0.097cm; border-style:none; }
+	.الجدول2_C36 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول2_C4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C5 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C6 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C7 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C8 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول2_C9 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول3_A1 { vertical-align:middle; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول3_A3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A1 { background-color:#000000; padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A10 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A5 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A6 { padding:0.097cm; border-style:none; }
+	.الجدول4_A7 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_A8 { padding:0.097cm; border-style:none; }
+	.الجدول4_A9 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:thin; border-top-style:solid; border-top-color:#000000; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B1 { background-color:#000000; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول4_B10 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B5 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول4_B6 { padding:0.097cm; border-style:none; }
+	.الجدول4_B7 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول4_B8 { padding:0.097cm; border-style:none; }
+	.الجدول4_B9 { padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول5_A1 { vertical-align:middle; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول5_A2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول5_A3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول6_A1 { vertical-align:middle; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول6_A2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول6_A4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول7_A1 { vertical-align:middle; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول7_A2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول7_A4 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول8_A1 { vertical-align:middle; padding:0.097cm; border-width:thin; border-style:solid; border-color:#000000; }
+	.الجدول8_A2 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول8_A3 { padding:0.097cm; border-left-width:thin; border-left-style:solid; border-left-color:#000000; border-right-width:thin; border-right-style:solid; border-right-color:#000000; border-top-style:none; border-bottom-width:thin; border-bottom-style:solid; border-bottom-color:#000000; }
+	.الجدول1_A { width:1.274cm; }
+	.الجدول1_B { width:1.108cm; }
+	.الجدول1_C { width:4.593cm; }
+	.الجدول1_D { width:5.412cm; }
+	.الجدول1_E { width:5.389cm; }
+	.الجدول2_A { width:3.302cm; }
+	.الجدول2_B { width:6.976cm; }
+	.الجدول2_C { width:7.311cm; }
+	.الجدول3_A { width:17.63cm; }
+	.الجدول4_A { width:8.546cm; }
+	.الجدول4_B { width:9.043cm; }
+	.الجدول5_A { width:17.63cm; }
+	.الجدول6_A { width:17.63cm; }
+	.الجدول7_A { width:17.63cm; }
+	.الجدول8_A { width:17.463cm; }
+	.T1 { font-weight:bold; }
+	.T10 { font-weight:normal; }
+	.T11 { font-weight:normal; }
+	.T12 { font-weight:normal; }
+	.T13 { font-weight:normal; }
+	.T14 { font-weight:normal; }
+	.T15 { font-weight:normal; }
+	.T16 { font-weight:normal; }
+	.T17 { font-weight:normal; }
+	.T18 { font-weight:bold; }
+	.T19 { font-weight:bold; }
+	.T2 { color:#0000ff; }
+	.T21 { font-style:normal; }
+	.T22 { font-style:normal; }
+	.T23 { font-style:normal; }
+	.T24 { font-style:normal; }
+	.T3 { color:#0000ff; font-weight:bold; }
+	.T4 { color:#0000ff; font-weight:bold; }
+	.T5 { color:#0000ff; font-weight:bold; }
+	.T57 { font-style:normal; }
+	.T58 { font-style:normal; }
+	.T59 { font-style:normal; }
+	.T6 { color:#0000ff; font-weight:normal; }
+	.T60 { font-style:normal; }
+	.T7 { color:#0000ff; font-weight:normal; }
+	.T8 { color:#0000ff; font-style:normal; }
+	<!-- ODF styles with no properties representable as CSS -->
+	.Numbering_20_Symbols .T20 .T25 .T26 .T27 .T28 .T29 .T30 .T31 .T32 .T33 .T34 .T35 .T36 .T37 .T38 .T39 .T40 .T41 .T42 .T43 .T44 .T45 .T46 .T47 .T48 .T49 .T50 .T51 .T52 .T53 .T54 .T55 .T56 .T61 .T62 .T63 .T64 .T65 .T66 .T67 .T68 .T69 .T70 .T71 .T72 .T73 .T74 .T75 .T76 .T77 .T78 .T79 .T80 .T81 .T82 .T83 .T84 .T85 .T86 .T87 .T88 .T89 .T9 .T90 .T91 .T92 .T93  { }
+	</style></head><body dir="ltr" style="max-width:21.59cm;margin-top:2cm; margin-bottom:2cm; margin-left:2cm; margin-right:2cm; "><p class="P4">بسم الله الرحمن الرحيم</p><p class="P4">آلة إلي<span class="T75">ريا</span> نموذجية Modular Ily<span class="T31">ria</span> Machine</p><p class="P4"> </p><p class="P5">النماذج:</p><ol><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تنفيذ تعليمة من لغة الآلة<span class="odfLiEnd"/> </p></li><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>تنفيذ تعليمة من لغة التجميع<span class="odfLiEnd"/> </p></li><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>حجز الذاكرة للمتغيرات<span class="odfLiEnd"/> </p></li><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>تقسيم الذاكرة إلى ثلاث مناطق:<span class="odfLiEnd"/> </p><ol><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>ذاكرة خاصة بالتعليمات<span class="odfLiEnd"/> </p></li><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>ذاكرة خاصة بالمتغيرات<span class="odfLiEnd"/> </p></li><li><p class="P133" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>ذاكرة خاصة بالاجراءات<span class="odfLiEnd"/> </p></li></ol></li></ol><p class="P5"> </p><p class="P6">الطبقات:</p><p class="P5"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول1"><colgroup><col width="56"/><col width="48"/><col width="201"/><col width="237"/><col width="236"/></colgroup><tr><td colspan="5" style="text-align:left;width:1.274cm; " class="الجدول1_A1"><p class="P96">لغة تجميع إليريا</p></td></tr><tr><td colspan="5" style="text-align:left;width:1.274cm; " class="الجدول1_A2"><p class="P98">مجمع إليريا</p></td></tr><tr><td colspan="5" style="text-align:left;width:1.274cm; " class="الجدول1_A3"><p class="P97">لغة آلة إليريا</p></td></tr><tr><td style="text-align:left;width:1.274cm; " class="الجدول1_A4"><p class="P99">وحدة الذاكرة</p></td><td colspan="2" style="text-align:left;width:1.108cm; " class="الجدول1_A4"><p class="P102">ذاكرة التعليمات</p></td><td style="text-align:left;width:5.412cm; " class="الجدول1_A4"><p class="P103">ذاكرة المتغيرات</p></td><td style="text-align:left;width:5.389cm; " class="الجدول1_E4"><p class="P103">ذاكرة الإجراءات</p></td></tr><tr><td rowspan="10" style="text-align:left;width:1.274cm; " class="الجدول1_A5"><p class="P100">وحدة المعالجة المركزية</p></td><td colspan="4" style="text-align:left;width:1.108cm; " class="الجدول1_B5"><p class="P104">وحدة جلب وفك الشيفرة</p></td></tr><tr><td colspan="4" style="text-align:left;width:1.108cm; " class="الجدول1_B5"><p class="P105">وحدة التنفيذ</p></td></tr><tr><td rowspan="8" style="text-align:left;width:1.108cm; " class="الجدول1_B7"><p class="P101">السـجـــلات</p></td><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P106">المجمع</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P107">شيفرة العملية</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108"><a id="__DdeLink__1757_1580996335"/>المعامل</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108">سجل التعليمة</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108">عداد البرنامج</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108">نهاية التعليمات</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108"><span class="T39">بداية</span> المتغيرات</p></td></tr><tr><td colspan="3" style="text-align:left;width:4.593cm; " class="الجدول1_C7"><p class="P108"><span class="T39">بداية الإجراءات</span> </p></td></tr></table><p class="P5"> </p><ol><li><p class="P148" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>لغة آلة إليريا:<span class="odfLiEnd"/> </p><ol><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>لغة آلة ذات تعليمات محددة<span class="odfLiEnd"/> </p></li><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>تتألف التعليمة من رقم طبيعي<span class="odfLiEnd"/> </p></li><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>طول هذا الرقم يكون حسب مساحة الذاكرة المتوفرة<span class="odfLiEnd"/> </p></li><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>الرقمان المتواجدان على اليسار في التعليمة يمثلان العملية<span class="odfLiEnd"/> </p></li><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>باقي الأرقام تمثل عنوان الذاكرة الذي تتم عليه العملية<span class="odfLiEnd"/> </p></li><li><p class="P134" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span>لا يهم أن تمثل التعليمة برقم عَشري أو رقم سادس عشري<span class="odfLiEnd"/> </p></li><li><p class="P135" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">7.</span>تنقسم التعليمة إلى فئتين:<span class="odfLiEnd"/> </p><ol><li><p class="P135" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تعليمة تنفيذية: التي تقوم بالعمليات على المتغيرات أو تغير عداد البرنامج أو تعلم ذاكرة على أنّها ملصق<span class="odfLiEnd"/> </p></li><li><p class="P135" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>تعليمة حجز: التي تحجز مكان في الذاكرة لمتغير ما<span class="odfLiEnd"/> </p></li></ol></li><li><p class="P136" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">8.</span>مثال:<span class="odfLiEnd"/> </p><ol><li><p class="P137" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span><span class="T5">+10</span><span class="T1">0004</span><span class="odfLiEnd"/> </p><ol><li><p class="P166" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>+10 تمثل العملية<span class="odfLiEnd"/> </p></li><li><p class="P137" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T19">0004</span><span class="T17"> تمثل الذاكرة التي تتم عليها العملية</span><span class="odfLiEnd"/> </p></li></ol></li></ol></li></ol></li></ol><p class="P13"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول2"><colgroup><col width="144"/><col width="305"/><col width="319"/></colgroup><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A1"><p class="P109"><span class="T32">الشيفرة</span> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_A1"><p class="P75"> الاسم</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C1"><p class="P76"><span class="T33">name</span> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>1</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B2"><p class="P77">ثماني</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C2"><p class="P78">byte</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>2</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B3"><p class="P77">قصير</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C3"><p class="P78">short</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>3</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B4"><p class="P77">حرف</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C4"><p class="P78">char</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>4</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B5"><p class="P77">صحيح</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C5"><p class="P78">int</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>5</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B6"><p class="P77">طويل</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C6"><p class="P78">long</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>6</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B7"><p class="P77">عائم</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C7"><p class="P78">float</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>7</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B8"><p class="P77">مزدوج</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C8"><p class="P78">double</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A9"><p class="P110"><span class="T34">0</span>8</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B9"><p class="P77">حروف</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C9"><p class="P78">chars</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A10"><p class="P111"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B10"><p class="P79"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C10"><p class="P79"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A11"><p class="P111">10</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B11"><p class="P80">اقرا</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C11"><p class="P80">read</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A12"><p class="P112">11</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B12"><p class="P81">اكتب</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C12"><p class="P82">write</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A13"><p class="P112">12</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B13"><p class="P83">اكتبسج</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C13"><p class="P84">writenl</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A14"><p class="P113"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B14"><p class="P83"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C14"><p class="P84"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A15"><p class="P114">20</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B15"><p class="P85">حمل</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C15"><p class="P86">Load</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A16"><p class="P114">21</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B16"><p class="P87"><a id="__DdeLink__10_1906498482"/>خزن</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C16"><p class="P88">store</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A17"><p class="P110"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B17"><p class="P89"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C17"><p class="P89"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A18"><p class="P114">30</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B18"><p class="P90">جمع</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C18"><p class="P91">add</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A23"><p class="P114">31</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B19"><p class="P90">طرح</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C19"><p class="P91"><span class="T35">s</span>ub</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A23"><p class="P114">32</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B20"><p class="P90">قسمة</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C20"><p class="P91">div</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A21"><p class="P114">33</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B21"><p class="P90">ضرب</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C21"><p class="P91">mul</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A22"><p class="P114">34</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B22"><p class="P90">باقي</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C22"><p class="P91">mod</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A23"><p class="P115">35</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B23"><p class="P90">زد</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C23"><p class="P92">inc</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A24"><p class="P115">36</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B24"><p class="P90">نقص</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C24"><p class="P92">dec</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A25"><p class="P116"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B25"><p class="P89"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C25"><p class="P93"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A26"><p class="P114">40</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B26"><p class="P89">تقاطع</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C26"><p class="P89">branch</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A28"><p class="P114"><span class="T36">4</span>1</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B27"><p class="P89">تقاطعسلب</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C27"><p class="P89">branchneg</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A28"><p class="P114">42</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B28"><p class="P89">تقاطعصفر</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C28"><p class="P89">branchzero</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A29"><p class="P114">43</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B29"><p class="P89">انهاء</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C29"><p class="P89">halt</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A30"><p class="P114"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B30"><p class="P89"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C30"><p class="P89"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A31"><p class="P115">50</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B31"><p class="P90">اس</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C31"><p class="P91">exp</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A32"><p class="P115">51</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B32"><p class="P90">نوع</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C32"><p class="P91">caltype</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A33"><p class="P117">52</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B33"><p class="P90">دقة</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C33"><p class="P93"><span class="T37">p</span>rc</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A34"><p class="P118">53</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B34"><p class="P94">جذر</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C34"><p class="P94">sqrt</p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A35"><p class="P118"> </p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B35"><p class="P94"> </p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C35"><p class="P94"> </p></td></tr><tr><td style="text-align:left;width:3.302cm; " class="الجدول2_A36"><p class="P117">60</p></td><td style="text-align:left;width:6.976cm; " class="الجدول2_B36"><p class="P90">ملصق</p></td><td style="text-align:left;width:7.311cm; " class="الجدول2_C36"><p class="P95">label</p></td></tr></table><p class="P1"> </p><ol><li><p class="P167" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>وحدة جلب وفك تشفير التعليمة:<span class="odfLiEnd"/> </p><ol><li><p class="P173" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تجلب التعليمة الحالية من الذاكرة:<span class="odfLiEnd"/> </p><ol><li><p class="P173" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>مكان التعليمة يحدده عداد البرنا<span class="T29">مج</span><span class="odfLiEnd"/> </p></li><li><p class="P174" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T30">ت</span>فكك التعليمة إلى عملية ومعامل<span class="odfLiEnd"/> </p></li><li><p class="P174" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span><span class="T30">ت</span>ضع العملية في سجل العملية<span class="odfLiEnd"/> </p></li><li><p class="P174" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span><span class="T30">ت</span>ضع المعامل في سجل المعامل<span class="odfLiEnd"/> </p></li><li><p class="P175" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>تغير قيمة عداد البرنامج لمكان التعليمة التالية<span class="odfLiEnd"/> </p></li></ol></li></ol></li><li><p class="P168" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>وحدة التنفيذ:<span class="odfLiEnd"/> </p><ol><li><p class="P176" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تقوم بتنفيذ التعليمة:<span class="odfLiEnd"/> </p><ol><li><p class="P176" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تحدد العملية حسب سجل العملية<span class="odfLiEnd"/> </p></li><li><p class="P176" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>تنفذ العملية على الذاكرة المحددة في سجل المعامل<span class="odfLiEnd"/> </p></li></ol></li><li><p class="P176" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>هناك عمليات لا تحتاج إلى معامل:<span class="odfLiEnd"/> </p><ol><li><p class="P176" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>إيقاف<span class="odfLiEnd"/> </p></li></ol></li></ol></li><li><p class="P169" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>حجز المتغيرات:<span class="odfLiEnd"/> </p><ol><li><p class="P177" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>يقوم بحجز الذاكرة للمتغيرات<span class="odfLiEnd"/> </p></li><li><p class="P177" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>هناك 8 أنواع للمتغيرات:<span class="odfLiEnd"/> </p><ol><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span><span class="T3">ثماني</span><span class="T10"> </span><span class="T3">byte</span><span class="T10"> يحجز </span><span class="T11">1</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T3">قصير</span><span class="T6"> </span><span class="T3">short</span><span class="T10"> يحجز </span><span class="T12">2</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span><span class="T3">حرفي</span><span class="T6"> </span><span class="T3">char</span><span class="T6"> </span><span class="T10">يحجز </span><span class="T12">2</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span><span class="T3">صحيح</span><span class="T6"> </span><span class="T3">int</span><span class="T10"> يحجز </span><span class="T12">4</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span><span class="T3">طويل</span><span class="T6"> </span><span class="T3">long</span><span class="T10"> يحجز </span><span class="T12">8</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span><span class="T3">عائم</span><span class="T10"> </span><span class="T3">float</span><span class="T10"> يحجز </span><span class="T12">4</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">7.</span><span class="T3">مزدوج</span><span class="T10"> </span><span class="T3">double</span><span class="T10"> يحجز </span><span class="T12">8</span><span class="T10"> ب</span><span class="T11">اي</span><span class="T10">ت من الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P138" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">8.</span><span class="T3">نصي</span><span class="T10"> سلسلة من </span><span class="T3">حرفي</span><span class="odfLiEnd"/> </p></li><li><p class="P139" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">9.</span><span class="T10">يحجز كل متغير عدد البايتات </span><span class="T13">ا</span><span class="T15">ل</span><span class="T13">لازمة حسب نوعه</span><span class="odfLiEnd"/> </p></li><li><p class="P140" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">10.</span><span class="T10">النوع </span><span class="T3">النصي</span><span class="T10"> ثابت ولا يتغير</span><span class="odfLiEnd"/> </p></li><li><p class="P178" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">11.</span>طريقة الحجز<span class="odfLiEnd"/> </p><ol><li><p class="P179" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>قسم التعليمة إلى أجزاء الفاصل بينها هو الفراغ<span class="odfLiEnd"/> </p></li><li><p class="P141" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T10">قم بتحويل ال</span><span class="T14">جزء الأول إلى رقم صحيح</span><span class="odfLiEnd"/> </p></li><li><p class="P180" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>في حالة كان الرقم الصحيح الموافق للجزء الأول:<span class="odfLiEnd"/> </p><ol><li><p class="P142" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span><span class="T4">+</span><span class="T3">01 </span><span class="T10">: احجز </span><span class="T6">ثماني</span><span class="T10"> في الذاكرة الخاصة بالمتغيرات</span><span class="odfLiEnd"/> </p></li><li><p class="P142" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T4">+</span><span class="T3">02 </span><span class="T10">: احجز </span><span class="T6">قصير</span><span class="T10">  ...</span><span class="odfLiEnd"/> </p></li><li><p class="P142" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span><span class="T4">+</span><span class="T3">03 </span><span class="T10">: احجز </span><span class="T6">حرفي  </span><span class="T10">...</span><span class="odfLiEnd"/> </p></li><li><p class="P142" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span><span class="T4">+</span><span class="T3">04 </span><span class="T10">: احجز </span><span class="T6">صحيح  </span><span class="T10">...</span><span class="odfLiEnd"/> </p></li><li><p class="P143" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span><span class="T4">+</span><span class="T3">05 </span><span class="T10">: احجز </span><span class="T6">طويل  </span><span class="T10">...</span><span class="odfLiEnd"/> </p></li><li><p class="P144" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span><span class="T4">+</span><span class="T3">06 </span><span class="T10">: احجز </span><span class="T6">عائم  </span><span class="T10">...</span><span class="odfLiEnd"/> </p></li><li><p class="P144" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">7.</span><span class="T4">+</span><span class="T3">07 </span><span class="T10">: احجز </span><span class="T7">مزدوج </span><span class="T10">...</span><span class="odfLiEnd"/> </p></li><li><p class="P145" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">8.</span><span class="T4">+</span><span class="T3">08 </span><span class="T10">: احجز </span><span class="T6">نصي   </span><span class="T10">... </span><span class="odfLiEnd"/> </p></li></ol></li></ol></li></ol></li></ol></li></ol><p class="P2"> </p><ol><li><p class="P170" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>مجمع إليريا:<span class="odfLiEnd"/> </p><ol><li><p class="P146" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span><span class="T10">يحول التعليمات المكتوبة بلغة تجميع إليريا </span><span class="T16">إلى الشيفرات والذواكر الموافقة لها</span><span class="odfLiEnd"/> </p><ol><li><p class="P181" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>مثال:<span class="odfLiEnd"/> </p><p class="P147" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0cm"><!-- --></span><span class="T3">ثماني</span><span class="T10"> 0 </span><span class="T18">ث</span><span class="odfLiEnd"/> </p><p class="P147" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0cm"><!-- --></span><span class="T3">+01</span><span class="T10">   0 </span><span class="T18">4</span><span class="odfLiEnd"/> </p></li></ol></li></ol></li><li><p class="P171" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span>السجلات:<span class="odfLiEnd"/> </p><ol><li><p class="P182" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>المجمع: فيه تتراكم النتائج الصادرة عن العمليات كالجمع والطرح والقسمة… وأيضا عند تحميل قيمة متغير من ذاكرة معينة فإن هذه القيمة تنسخ وتوضع في المجمع<span class="odfLiEnd"/> </p></li><li><p class="P150" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span><span class="T9">شيفرة العملية: </span><span class="T20">تضع فيها وحدة جلب وفك الشيفرة قيمة تمثل العملية الحالية التي ستجرى على المعامل</span><span class="odfLiEnd"/> </p></li><li><p class="P183" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>المعامل: فيه يخزن مكان الذاكرة التي ستجرى عليها العملية الحالية<span class="odfLiEnd"/> </p></li><li><p class="P184" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>سجل التعليمة: تخزن فيه التعليمة الحالية<span class="odfLiEnd"/> </p></li><li><p class="P151" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>عداد البرنامج: <span class="T40">يحدد مكان التعليمة التالية في الذاكرة</span><span class="odfLiEnd"/> </p></li><li><p class="P152" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span>نهاية التعليمات: عنوان <span class="T41">ذاكرة</span> <span class="T41">يمثل حد</span> <span class="T41">الذاكرة المحجوزة للتعليمات</span> طبعا وكذلك بداية أول ذاكرة مخصصة للمتغيرات<span class="odfLiEnd"/> </p><ol><li><p class="P153" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>أول عنوان ذاكرة خاص بالتعليمات هو 0<span class="odfLiEnd"/> </p></li></ol></li><li><p class="P152" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">7.</span>بداية المتغيرات: أول عنوان ذاكرة مخصص <span class="T41">للمتغيرات</span> <span class="T41">وحد الذاكرة المحجوزة للتعليمات</span><span class="odfLiEnd"/> </p></li><li><p class="P153" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">8.</span>بداية الإجراءات: أول عنوان ذاكرة مخصص للإجراءات وكذلك <span class="T42">حد الذاكرة المخصصة للمتغيرات</span><span class="odfLiEnd"/> </p><ol><li><p class="P154" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>حد ذاكرة الإجراءات هو حد الذاكرة الرئيسية<span class="odfLiEnd"/> </p></li></ol></li></ol></li></ol><p class="P12"> </p><p class="P12"> </p><p class="P3"> </p><ol><li><p class="P172" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">7.</span>الأسماء المرشحة لتكون فئات:<span class="odfLiEnd"/> </p><p class="P172" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0cm"><!-- --></span><span class="odfLiEnd"/> </p></li></ol><table border="0" cellspacing="0" cellpadding="0" class="الجدول4"><colgroup><col width="373"/><col width="395"/></colgroup><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A1"><ol><li><p class="P121"><span class="T38">الاسم</span> </p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B1"><ol><li><p class="P128"> <span class="T38">جافا</span></p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A3"><ol><li><p class="P122">لغة آلة إليريا</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B2"><ol><li><p class="P129">IlyriaMachine</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A3"><ol><li><p class="P123">وحدة المعالجة المركزية</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B3"><ol><li><p class="P130">CPU</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A4"><ol><li><p class="P124"><a id="__DdeLink__1755_15809963352"/>وحدة جلب وفك الشيفرة</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B4"><ol><li><p class="P131">FetchDecodeUnit</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A5"><ol><li><p class="P125">وحدة التنفيد</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B5"><ol><li><p class="P131">ExecutionUnit</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A6"><ol><li><p class="P125"> </p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B6"><ol><li><p class="P131"> </p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A7"><ol><li><p class="P126">وحدة الذاكرة</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B7"><ol><li><p class="P130">Memory</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A8"><ol><li><p class="P126"> </p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B8"><ol><li><p class="P130"> </p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A9"><ol><li><p class="P127">مجمع إليريا</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B9"><ol><li><p class="P132">IlyriaAssembler</p></li></ol></td></tr><tr><td style="text-align:left;width:8.546cm; " class="الجدول4_A10"><ol><li><p class="P127">لغة تجميع إليريا</p></li></ol></td><td style="text-align:left;width:9.043cm; " class="الجدول4_B10"><ol><li><p class="P132">IlyriaAssembly</p></li></ol></td></tr></table><p class="P7"> </p><ol><li><p class="P149" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">8.</span>نموذج الفئات:<span class="odfLiEnd"/> </p></li></ol><!--Next 'div' was a 'text:p'.--><div class="P9"><!--Next 'div' is emulating the top hight of a draw:frame.--><!--Next '
+			div' is a draw:frame.
+		--><div style="height:8.943cm;width:10.716cm; padding:0;  float:left; position:relative; left:0cm; " class="fr1" id="صورة1"><img style="height:8.943cm;width:10.716cm;" alt="" src="data:image/*;base64,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"/></div></div><div style="clear:both; line-height:0; width:0; height:0; margin:0; padding:0;"> </div><table border="0" cellspacing="0" cellpadding="0" class="الجدول3"><colgroup><col width="770"/></colgroup><tr><td style="text-align:left;width:17.63cm; " class="الجدول3_A1"><p class="P14">IlyriaMachine«<span class="T2">interface</span>»</p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول3_A3"><p class="P21">BYTE   : <span class="T44">Integer</span>  = 1<a id="__DdeLink__1764_1580996335"/> <span class="T43">{ReadOnly}</span></p><p class="P22">SHORT  : <span class="T44">Integer</span>  = 2 <span class="T43">{ReadOnly}</span></p><p class="P22">CHAR   : <span class="T44">Integer</span>  = 3 <span class="T43">{ReadOnly}</span></p><p class="P22">INT    : <span class="T44">Integer</span>  = 4 <span class="T43">{ReadOnly}</span></p><p class="P22">LONG   : <span class="T44">Integer</span>  = 5 <span class="T43">{ReadOnly}</span></p><p class="P22">FLOAT  : <span class="T44">Integer</span>  = 6 <span class="T43">{ReadOnly}</span></p><p class="P22">DOUBLE : <span class="T44">Integer</span>  = 7 <span class="T43">{ReadOnly}</span></p><p class="P22">CHARS<a id="__DdeLink__1027_427011319"/>  : <span class="T44">Integer</span>  = 8 <span class="T43">{ReadOnly}</span></p><p class="P22"> </p><p class="P23"><a id="__DdeLink__1029_427011319"/><span class="T45">READ</span>    : <span class="T44">Integer</span>  = <span class="T46">10</span> <span class="T43">{ReadOnly}</span></p><p class="P23"><span class="T45">WRITE</span>   : <span class="T44">Integer</span>  = <span class="T46">11</span> <span class="T43">{ReadOnly}</span></p><p class="P24"><span class="T45">WRITENL </span>: <span class="T44">Integer</span>  = <span class="T46">12</span> <span class="T43">{ReadOnly}</span> </p><p class="P24"> </p><p class="P24"><span class="T47">LOAD</span>    : <span class="T44">Integer</span>  = <span class="T48">20</span> <span class="T43">{ReadOnly}</span></p><p class="P24"><span class="T47">STORE</span>   : <span class="T44">Integer</span>  = <span class="T48">21</span> <span class="T43">{ReadOnly}</span></p><p class="P24"> </p><p class="P25"><span class="T50">ADD </span>: <span class="T44">Integer</span>  = <span class="T50">30</span> <span class="T43">{ReadOnly}</span></p><p class="P25"><span class="T50">SUB</span> : <span class="T44">Integer</span>  = <span class="T50">31</span> <span class="T43">{ReadOnly}</span></p><p class="P25"><span class="T50">DIV</span> : <span class="T44">Integer</span>  = <span class="T50">32</span> <span class="T43">{ReadOnly}</span></p><p class="P25"><span class="T50">MUL </span>: <span class="T44">Integer</span>  = <span class="T50">33</span> <span class="T43">{ReadOnly}</span></p><p class="P26"><span class="T51">MOD </span>: <span class="T44">Integer</span>  = <span class="T52">34</span> <span class="T43">{ReadOnly}</span></p><p class="P26"><span class="T51">INC</span> : <span class="T44">Integer</span>  = <span class="T52">35</span> <span class="T43">{ReadOnly}</span></p><p class="P26"><span class="T51">DEC</span> : <span class="T44">Integer</span>  = <span class="T52">36</span> <span class="T43">{ReadOnly}</span></p><p class="P25"> </p><p class="P24"><a id="__DdeLink__1031_427011319"/><span class="T49">BRANCH     </span>: <span class="T44">Integer</span>  = <span class="T49">40</span> <span class="T43">{ReadOnly}</span> </p><p class="P27"><span class="T49">BRANCHNEG</span>  : <span class="T44">Integer</span>  = <span class="T49">41</span> <span class="T43">{ReadOnly}</span></p><p class="P27"><span class="T49">BRANCHZERO</span> : <span class="T44">Integer</span>  = <span class="T49">42</span> <span class="T43">{ReadOnly}</span></p><p class="P27"><span class="T49">HALT       </span>: <span class="T44">Integer</span>  = <span class="T49">43</span> <span class="T43">{ReadOnly}</span> </p><p class="P27"> </p><p class="P28"><span class="T53">EXP      </span>: <span class="T44">Integer</span>  = <span class="T54">50</span> <span class="T43">{ReadOnly}</span></p><p class="P28"><span class="T53">CALTYPE  </span>: <span class="T44">Integer</span>  = <span class="T54">51</span> <span class="T43">{ReadOnly}</span></p><p class="P28"><span class="T53">PRCISION </span>: <span class="T44">Integer</span>  = <span class="T54">52</span> <span class="T43">{ReadOnly}</span></p><p class="P28"><span class="T53">SQRT      </span>: <span class="T44">Integer</span>  = <span class="T54">53</span> <span class="T43">{ReadOnly}</span></p><p class="P28"> </p><p class="P28"><span class="T53">LABEL     </span>: <span class="T44">Integer</span>  = <span class="T54">70</span> <span class="T43">{ReadOnly}</span></p><p class="P29"><span class="T55">FUNCTION  </span>: <span class="T44">Integer</span>  = <span class="T55">71</span> <span class="T43">{ReadOnly}</span></p><p class="P29"><span class="T55">RETURN    </span>: <span class="T44">Integer</span>  = <span class="T55">72</span> <span class="T43">{ReadOnly}</span></p><p class="P30"><span class="T55">CALL      </span>: <span class="T44">Integer</span>  = <span class="T55">73</span> <span class="T43">{ReadOnly}</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول3_A3"><p class="P19">+fetch()   : <span class="T86">Integer</span></p><p class="P19">+decode()  : <span class="T86">Integer[]</span></p><p class="P19">+execute() : <span class="T86">Integer</span></p><p class="P20">+reset()</p></td></tr></table><p class="P8"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول5"><colgroup><col width="770"/></colgroup><tr><td style="text-align:left;width:17.63cm; " class="الجدول5_A1"><p class="P15"><span class="T56"> </span><span class="T57">CPU</span> <span class="T8">implements</span> IlyriaMachine</p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول5_A2"><p class="P31">-<span class="T85">next</span>Id : Integer</p><p class="P32">-<span class="T84">cpuId : Integer {ReadOnly}</span></p><p class="P32"> </p><p class="P32"><span class="T65">#</span><span class="T21">«</span><span class="T22">create</span><span class="T21">»</span>fetch<span class="T62">Decode</span> : FetchDecodeUnit</p><p class="P32">#<a id="__DdeLink__1551_2040549708"/><span class="T21">«</span><span class="T22">create</span><span class="T21">»</span>execut<span class="T64">ion</span>   : ExecutionUnit</p><p class="P35">#<span class="T21">«</span><span class="T22">create</span><span class="T21">»</span>ram         : <span class="T61">ByteBuffer</span></p><p class="P35"> </p><p class="P44"><a id="__DdeLink__1571_1994074090"/>#<span class="T21">«</span><span class="T22">create</span><span class="T21">»</span>input  : Scanner     <span class="T89">{ReadOnly}</span></p><p class="P44">#<span class="T21">«</span><span class="T22">create</span><span class="T21">»</span>output : PrintStream <span class="T89">{ReadOnly}</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول5_A3"><p class="P72">+CPU«constructor»()</p><p class="P52"><span class="T77">+</span>fetch()   : <span class="T87">Integer</span> </p><p class="P52"><span class="T77">+</span>decode()  : <span class="T87">Integer[]</span></p><p class="P52"><span class="T77">+</span>execute() : <span class="T88">Integer</span></p><p class="P64">+reset()</p><p class="P64"> </p><p class="P65">+getInput()  : Scanner</p><p class="P65">+getOutput() : PrintStream</p></td></tr></table><p class="P10"> </p><p class="P11"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول6"><colgroup><col width="770"/></colgroup><tr><td style="text-align:left;width:17.63cm; " class="الجدول6_A1"><p class="P16"><span class="T56"> </span><span class="T58">FetchDecodeUnit</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول6_A2"><p class="P33">#execut<span class="T62">e</span>     : ExecutionUnit</p><p class="P34">#ram         : <span class="T61">ByteBuffer</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول6_A4"><p class="P73">+<span class="T66">FetchDecodeUnit</span>«constructor»(memories : <span class="T63">ByteBuffer</span>,</p><p class="P73">  <span class="T64">execute : ExecutionUnit</span>)</p><p class="P53"><span class="T78">+</span>fetch()</p><p class="P53"><span class="T78">+</span>decode()</p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول6_A4"><p class="P74"> </p></td></tr></table><p class="P11"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول7"><colgroup><col width="770"/></colgroup><tr><td style="text-align:left;width:17.63cm; " class="الجدول7_A1"><p class="P17"><span class="T56"> </span><span class="T59">ExecutionUnit</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول7_A2"><p class="P36">#accum : Double</p><p class="P36"> </p><p class="P37">#operationCode : Integer</p><p class="P37">#operand       : Integer</p><p class="P37"> </p><p class="P38">#calculationType : Byte</p><p class="P39">#precision       : Byte</p><p class="P37"> </p><p class="P37">#instruction    : <span class="T83">integer</span></p><p class="P40">#programCounter : <span class="T82">Integer</span></p><p class="P40"> </p><p class="P46">#dataIndex : integer;</p><p class="P41"> </p><p class="P41">-<span class="T81">INSTRUCTION_LENGTH : Byte {ReadOnly}</span></p><p class="P41"> </p><p class="P42"><span class="T76">-END_</span>I<span class="T70">NSTRUCTION</span> : Integer <span class="T69">{ReadOnly}</span></p><p class="P43">-END_DATA        : Integer {ReadOnly}</p><p class="P47"><span class="T67">-END_MEMORY</span>      : Integer <span class="T69">{ReadOnly}</span></p><p class="P47"> </p><p class="P48">#ram : ByteBuffer;</p><p class="P47"> </p><p class="P45"><span class="T24">#</span>input  : Scanner     <span class="T89">{ReadOnly}</span></p><p class="P45"><span class="T21">#output : PrintStream </span><span class="T23">{ReadOnly}</span></p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول7_A4"><p class="P55"><span class="T9">+</span><span class="T25">Execut</span><span class="T26">ion</span><span class="T25">Unit</span><a id="__DdeLink__1671_546632386"/><span class="T9">«constructor»</span><span class="T9">(</span><span class="T26"> </span><span class="T27">memory : ByteBuffer</span><span class="T9">)</span></p><p class="P54"><span class="T68">+</span>execute()</p></td></tr><tr><td style="text-align:left;width:17.63cm; " class="الجدول7_A4"><p class="P56">+<span class="T72">getAccumulator() : Double</span></p><p class="P57">+<span class="T73">set</span>Accumulator(<span class="T73">value : Double</span>)</p><p class="P57"> </p><p class="P58"><span class="T71">+g</span>etOperationCode() : Integer</p><p class="P59">+getOperand()       : Integer</p><p class="P56">+setOperationCode(operation : <span class="T74">Integer</span>)</p><p class="P59">+setOperand(operand : Integer)</p><p class="P59"> </p><p class="P60">+getCalculationType() : Byte</p><p class="P61">+getPrecision()       : Byte</p><p class="P62">+setCalculationType(type : Byte)</p><p class="P62">+setPrecision(precision : Byte)</p><p class="P62"> </p><p class="P63">+getInstructionRegister() : Integer</p><p class="P63">+getProgramCounter()      : Integer</p><p class="P63">+setInstructionRegister( instruction : Integer )</p><p class="P63">+setProgramCounter( pc : Integer )</p><p class="P63">+incrementProgramCounter()</p><p class="P63"> </p><p class="P69">+getEndOfInstructions() : Integer</p><p class="P69">+getEndOfData() : Integer</p><p class="P69">+getEndOfMemory() : Integer</p><p class="P70"> </p><p class="P71">+<span class="T80">reset</span>()</p></td></tr></table><p class="P119"> </p><p class="P120"> </p><table border="0" cellspacing="0" cellpadding="0" class="الجدول8"><colgroup><col width="763"/></colgroup><tr><td style="text-align:left;width:17.463cm; " class="الجدول8_A1"><p class="P18"><span class="T56"> </span><span class="T60">IlyriaAssembler</span></p></td></tr><tr><td style="text-align:left;width:17.463cm; " class="الجدول8_A2"><p class="P51">cpu : CPU</p><p class="P49">input  : Scanner</p><p class="P49">path   : Path</p><p class="P49">output : PrintStream</p><p class="P49"/><p class="P50">values : HashTable&lt; String integer &gt;</p></td></tr><tr><td style="text-align:left;width:17.463cm; " class="الجدول8_A3"><p class="P67"><span class="T92">+IlyriaAssembler</span><span class="T28">«constructor»</span>( source : <span class="T91">Path</span> )</p><p class="P68">-readNextLine() : String</p><p class="P68">-<span class="T93">splitLine( line : String )         </span></p><p class="P66">-compile() : Integer</p><p class="P66"> </p></td></tr></table><p class="P120"> </p><p class="P119"> </p><ol><li><p class="P155" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">9.</span>بالنسبة لخطوات التنفيذ هي مفصلة في النص المصدري للمشروع mim<span class="odfLiEnd"/> </p></li><li><p class="P156" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">10.</span>إضافات:<span class="odfLiEnd"/> </p><ol><li><p class="P157" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تعليمة الحجز الديناميكي ALLOC:<span class="odfLiEnd"/> </p><ol><li><p class="P157" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>التي تحجز مساحة جديدة للمتغيرات<span class="odfLiEnd"/> </p></li><li><p class="P158" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>ثم تضيف لـdataIndex عدد البايتات المحجوزة<span class="odfLiEnd"/> </p></li></ol></li><li><p class="P159" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>تعليمة الحذف DEL:<span class="odfLiEnd"/> </p><ol><li><p class="P159" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span> التي تحرر مساحة من الذاكرة<span class="odfLiEnd"/> </p></li><li><p class="P160" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>ثم تنقص من dataIndex عدد البايتات المحذوفة<span class="odfLiEnd"/> </p></li><li><p class="P160" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span><span class="T90">( لا داعي لها)</span>مشكلة إزاحة جميع عناوين المتغيرات<span class="odfLiEnd"/> </p></li><li><p class="P160" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span><span class="T90">(تم حلها في الإجراءات)</span>مشكلة تغيير جميع التعليمات التي ترجع إلى هذه العناوي<span class="T79">ن</span><span class="odfLiEnd"/> </p></li></ol></li></ol></li><li><p class="P161" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">11.</span>الإجراءات:<span class="odfLiEnd"/> </p><ol><li><p class="P161" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>تحدد الإجراءات بشيفرة العملية PROCEDURE<span class="odfLiEnd"/> </p></li><li><p class="P161" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>ينتهي الإجراء بالتعليمة RETURN:<span class="odfLiEnd"/> </p><ol><li><p class="P162" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>هذه التعليمة ترجع إلى العنوان التالي بعد تعليمة الإستدعاء<span class="odfLiEnd"/> </p></li><li><p class="P162" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>لا ترجع أي قيمة بل يمكن التعليمات التي في الإجراء هي التي تقوم بهذا…<span class="odfLiEnd"/> </p></li></ol></li><li><p class="P163" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>تستدعى الإجراءات بشيفرة العملية CALL<span class="odfLiEnd"/> </p><ol><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>أولا يقفز عداد المكدسة إلى العنوان التالي في المكدسة<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>يضع علامة بداية الإطار بالتعليمة FRAME<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>يضع التعليمات الواحدة تلوى الأخرى<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>بعد وضع التعليمة RETURN التي يجب أن تنتهي بها الإجراءات:<span class="odfLiEnd"/> </p><ol><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">1.</span>يعطى للتعليمة RETURN عنوان التعليمة التالية بعد الإستدعاء<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">2.</span>يقفز عداد البرنامج إلى التعليمة الأولى للإجراء الحالي<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">3.</span>ينفذ التعليمات وقد يحجز أماكن في الذاكرة<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">4.</span>محو المتغيرات المحلية يدوي<span class="odfLiEnd"/> </p></li><li><p class="P164" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>يجب أن تحذف المتغيرات المحلية بشكل عكس المصرح به<span class="odfLiEnd"/> </p></li><li><p class="P165" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">6.</span>يجب أن يحذف الإطار <span class="odfLiEnd"/> </p></li></ol></li><li><p class="P165" style="margin-right:0cm;"><span class="Numbering_20_Symbols" style="display:block;float:right;min-width:0.635cm;">5.</span>في حالة استدعاء إجراء لإجراء آخر يحدث نفس الشيء<span class="odfLiEnd"/> </p></li></ol></li></ol></li></ol></body></html>
